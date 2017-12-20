@@ -1,0 +1,53 @@
+{
+  "name": "irail-api",
+  "description": "Query the iRail.be API. Fully JS promises ready.",
+  "version": "0.6.2",
+  "homepage": "https://github.com/drupol/irail-api",
+  "bugs": {
+    "url": "https://github.com/drupol/irail-api/issues",
+    "email": "pol.dellaiera@protonmail.com"
+  },
+  "license": "MIT",
+  "main": "./dist/irailapi.min.js",
+  "scripts": {
+    "build": "npm run prettier && npm run transpile && uglifyjs dist/irailapi.js > dist/irailapi.min.js",
+    "transpile": "babel src -d dist",
+    "prepare": "npm run build",
+    "prepublisOnly": "npm run build",
+    "prettier": "prettier src/**/*.js --ignore-path ./.prettierignore --write"
+  },
+  "author": {
+    "name": "Pol Dellaiera",
+    "email": "pol.dellaiera@protonmail.com"
+  },
+  "keywords": [
+    "irail",
+    "promises",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drupol/irail-api.git"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "debug": "~2.6.9",
+    "make-fetch-happen": "^2.6.0",
+    "moment": "^2.20.1",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.0.3",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-preset-stage-1": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "eslint": "^4.13.1",
+    "jsdoc": "^3.5.5",
+    "prettier": "1.9.2",
+    "uglify-js": "^3.2.2"
+  }
+}
