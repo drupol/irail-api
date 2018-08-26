@@ -1,7 +1,7 @@
 {
   "name": "irail-api",
   "description": "Query the iRail.be API. Fully JS promises ready.",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "homepage": "https://github.com/drupol/irail-api",
   "bugs": {
     "url": "https://github.com/drupol/irail-api/issues",
