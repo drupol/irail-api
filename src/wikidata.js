@@ -1,9 +1,9 @@
-const os = require("os");
-const fetch = require("make-fetch-happen").defaults({
+const os = require('os');
+const fetch = require('make-fetch-happen').defaults({
   cacheManager: os.tmpdir()
 });
-const { URL } = require("url");
-const debug = require("debug")("irail-api");
+const { URL } = require('url');
+const debug = require('debug')('irail-api');
 
 class wikidata {
   /**
@@ -13,10 +13,10 @@ class wikidata {
    * @param {object} params
    * @returns {*|Promise<T>}
    */
-  _get = params => {
-    const url = new URL("https://query.wikidata.org/sparql");
+  _get = (params) => {
+    const url = new URL('https://query.wikidata.org/sparql');
 
-    Object.keys(params).forEach(key =>
+    Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
 
@@ -27,26 +27,26 @@ class wikidata {
         randomize: true
       },
       headers: {
-        "User-Agent": "nodejs drupol/irail-api",
-        Accept: "application/sparql-results+json"
+        'User-Agent': 'nodejs drupol/irail-api',
+        Accept: 'application/sparql-results+json'
       }
     };
 
     return fetch(url.href, options)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           debug(
             url.href +
-              " status: " +
+              ' status: ' +
               response.status +
-              " message: " +
+              ' message: ' +
               response.statusText
           );
         }
         return response.json();
       })
       .catch(function(err) {
-        debug(url.href + " error: " + err);
+        debug(url.href + ' error: ' + err);
       });
   };
 
@@ -68,12 +68,12 @@ class wikidata {
     };
 
     return this._get(params)
-      .then(result => result.results.bindings)
-      .then(rows => {
+      .then((result) => result.results.bindings)
+      .then((rows) => {
         const resultset = [];
 
         rows.forEach(function(row) {
-          if (typeof resultset[row.exact_match.value] === "undefined") {
+          if (typeof resultset[row.exact_match.value] === 'undefined') {
             resultset[row.exact_match.value] = [];
           }
           resultset[row.exact_match.value].push(row);
@@ -103,12 +103,12 @@ class wikidata {
     };
 
     return this._get(params)
-      .then(result => result.results.bindings)
-      .then(rows => {
+      .then((result) => result.results.bindings)
+      .then((rows) => {
         const resultset = [];
 
         rows.forEach(function(row) {
-          if (typeof resultset[row.exact_match.value] === "undefined") {
+          if (typeof resultset[row.exact_match.value] === 'undefined') {
             resultset[row.exact_match.value] = [];
           }
           resultset[row.exact_match.value].push(row);

@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13,8 +13,8 @@ var helpers = function helpers(irail, wikidata) {
         return stations.map(function (station) {
           station.wikidata = station.wikidata || {};
 
-          if (typeof rows[station["@id"]] !== "undefined") {
-            station.wikidata.adjacent_station = rows[station["@id"]];
+          if (typeof rows[station['@id']] !== 'undefined') {
+            station.wikidata.adjacent_station = rows[station['@id']];
           }
 
           return station;
@@ -29,8 +29,8 @@ var helpers = function helpers(irail, wikidata) {
         return stations.map(function (station) {
           station.wikidata = station.wikidata || {};
 
-          if (typeof rows[station["@id"]] !== "undefined") {
-            station.wikidata.connecting_line = rows[station["@id"]];
+          if (typeof rows[station['@id']] !== 'undefined') {
+            station.wikidata.connecting_line = rows[station['@id']];
           }
 
           return station;

@@ -1,14 +1,14 @@
-const Promise = require("bluebird");
-const moment = require("moment");
-const os = require("os");
-const fetch = require("make-fetch-happen").defaults({
+const Promise = require('bluebird');
+const moment = require('moment');
+const os = require('os');
+const fetch = require('make-fetch-happen').defaults({
   cacheManager: os.tmpdir()
 });
-const { URL } = require("url");
-const debug = require("debug")("irail-api");
-var extend = require("util")._extend;
-const helpers = require("./helpers.js");
-const wikidata = require("./wikidata");
+const { URL } = require('url');
+const debug = require('debug')('irail-api');
+var extend = require('util')._extend;
+const helpers = require('./helpers.js');
+const wikidata = require('./wikidata');
 
 /**
  * iRail API class.
@@ -28,10 +28,10 @@ class irailapi {
    *
    * @returns {*|Promise<T>}
    */
-  getStations = params => {
-    params = extend({ format: "json", lang: "en" }, params);
+  getStations = (params) => {
+    params = extend({ format: 'json', lang: 'en' }, params);
 
-    return this._get({ path: "stations/", params: params });
+    return this._get({ path: 'stations/', params: params });
   };
 
   /**
@@ -40,10 +40,10 @@ class irailapi {
    * @param {object} params
    * @returns {*|Promise<T>}
    */
-  getLiveboard = params => {
-    params = extend({ format: "json", lang: "en" }, params);
+  getLiveboard = (params) => {
+    params = extend({ format: 'json', lang: 'en' }, params);
 
-    return this._get({ path: "liveboard/", params: params });
+    return this._get({ path: 'liveboard/', params: params });
   };
 
   /**
@@ -52,10 +52,10 @@ class irailapi {
    * @param params
    * @returns {*|Promise<T>}
    */
-  getConnections = params => {
-    params = extend({ format: "json", lang: "en" }, params);
+  getConnections = (params) => {
+    params = extend({ format: 'json', lang: 'en' }, params);
 
-    return this._get({ path: "connections/", params: params });
+    return this._get({ path: 'connections/', params: params });
   };
 
   /**
@@ -64,10 +64,10 @@ class irailapi {
    * @param params
    * @returns {*|Promise<T>}
    */
-  getVehicle = params => {
-    params = extend({ format: "json", lang: "en" }, params);
+  getVehicle = (params) => {
+    params = extend({ format: 'json', lang: 'en' }, params);
 
-    return this._get({ path: "vehicle/", params: params });
+    return this._get({ path: 'vehicle/', params: params });
   };
 
   /**
@@ -76,10 +76,10 @@ class irailapi {
    * @param params
    * @returns {*|Promise<T>}
    */
-  getDisturbances = params => {
-    params = extend({ format: "json", lang: "en" }, params);
+  getDisturbances = (params) => {
+    params = extend({ format: 'json', lang: 'en' }, params);
 
-    return this._get({ path: "disturbances/", params: params });
+    return this._get({ path: 'disturbances/', params: params });
   };
 
   /**
@@ -88,7 +88,7 @@ class irailapi {
    * @returns {*|Promise<T>}
    */
   getLogs = () => {
-    return this._get({ path: "logs/" });
+    return this._get({ path: 'logs/' });
   };
 
   /**
@@ -100,9 +100,9 @@ class irailapi {
    * @returns {*|Promise<T>}
    */
   _get = ({ path, params = {} }) => {
-    const url = new URL("http://api.irail.be/" + path);
+    const url = new URL('http://api.irail.be/' + path);
 
-    Object.keys(params).forEach(key =>
+    Object.keys(params).forEach((key) =>
       url.searchParams.append(key, params[key])
     );
 
@@ -113,25 +113,25 @@ class irailapi {
         randomize: true
       },
       headers: {
-        "User-Agent": "nodejs drupol/irail-api"
+        'User-Agent': 'nodejs drupol/irail-api'
       }
     };
 
     return fetch(url.href, options)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           debug(
             url.href +
-              " status: " +
+              ' status: ' +
               response.status +
-              " message: " +
+              ' message: ' +
               response.statusText
           );
         }
         return response.json();
       })
       .catch(function(err) {
-        debug(url.href + " error: " + err);
+        debug(url.href + ' error: ' + err);
       });
   };
 
@@ -142,7 +142,7 @@ class irailapi {
    * @param stations
    * @returns {*}
    */
-  _processStations = stations => {
+  _processStations = (stations) => {
     return stations.station;
   };
 
@@ -153,16 +153,16 @@ class irailapi {
    * @param stations
    * @returns {Array}
    */
-  _processLiveboards = stations => {
+  _processLiveboards = (stations) => {
     const params = {
-      alerts: "true",
-      time: moment().format("HHmm"),
-      date: moment().format("DDMMYY")
+      alerts: 'true',
+      time: moment().format('HHmm'),
+      date: moment().format('DDMMYY')
     };
 
     return Promise.map(
       stations,
-      station => {
+      (station) => {
         params.id = station.id;
         return this.getLiveboard(params);
       },
@@ -179,12 +179,12 @@ class irailapi {
    * @param liveboard
    * @returns {Array}
    */
-  _processLiveboardDepartures = liveboard => {
-    if (!liveboard.hasOwnProperty("departures")) {
+  _processLiveboardDepartures = (liveboard) => {
+    if (!liveboard.hasOwnProperty('departures')) {
       liveboard.departures = { departure: [] };
     }
 
-    if (!liveboard.departures.hasOwnProperty("departure")) {
+    if (!liveboard.departures.hasOwnProperty('departure')) {
       liveboard.departures.departure = [];
     }
 
@@ -198,7 +198,7 @@ class irailapi {
    * @param liveboards
    * @returns {*|PromiseLike<T>|Promise<T>}
    */
-  _processDepartures = liveboards => {
+  _processDepartures = (liveboards) => {
     return Promise.map(liveboards, this._processLiveboardDepartures).then(
       function(departures) {
         return [].concat.apply([], departures);
